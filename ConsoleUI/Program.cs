@@ -10,33 +10,126 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-            //carManager.Add(new Car { BrandId = 3, ColorId = 3, DailyPrice = 175, Description = "Mercedes", ModelYear = 2010 });
+            //CarTest();
 
+            //ColorTest();
 
+            //BrandTest();
 
-            foreach (var cars in carManager.GetCarDeatils())
+            //UserTest();
+            //RentalTest();
+            CustomerTest();
+        }
+
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            customerManager.Add(new Customer { CompanyName = "A.Ş", UserId = 2 });
+            var result = customerManager.GetAll();
+            if (result.Success)
             {
-                Console.WriteLine(cars.CarName + " - " + cars.DailyPrice + " - " + cars.ColorName + " - " + cars.BrandName);
+                foreach (var customer in result.Data)
+                {
+                    Console.WriteLine(customer.CustomerId + " " + customer.CompanyName );
+                }
             }
+        }
 
-            //Car car = new Car
-            //{
-            //    BrandId = 1,
-            //    ColorId = 1,
-            //    DailyPrice = 150,
-            //    Description = "s",
-            //    ModelYear = 2015
-            //};
+        private static void RentalTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //rentalManager.Add(new Rental { CustomerId = 1, RentalId = 2, RentDate = DateTime.Now});
+            
+            var result = rentalManager.GetAll();
+            if (result.Success)
+            {
+                foreach (var rent in result.Data)
+                {
+                    Console.WriteLine( rent.RentDate + " " + rent.RentalId);
+                }
 
-            //carManager.Add(new Car { BrandId = 2, DailyPrice = 200, ColorId = 3, Description = "Audi", ModelYear = 2010 });
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
 
-
-            //carManager.Add(car);
-
-            //carManager.Add(new Car { BrandId=1, ColorId=3, DailyPrice=175, Description="BMW 3.20" , ModelYear=2017 });
+        private static void UserTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            //userManager.Add(new User { FirstName = "Ali", LastName = "Karadağ", Email = "a@gmail.com", Password = "1245" });
+            var result = userManager.GetAll();
+            if (result.Success)
+            { 
+                foreach (var user in result.Data)
+                {
+                    Console.WriteLine(user.FirstName + " " + user.LastName);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
 
         }
 
+        private static void BrandTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            var result = brandManager.GetAll();
+
+            if (result.Success)
+            {
+                foreach (var brand in result.Data)
+                {
+                    Console.WriteLine(brand.BrandName);
+                }
+                
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private static void ColorTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            var result = colorManager.GetAll();
+
+            if (result.Success)
+            {
+                foreach (var color in result.Data)
+                {
+                    Console.WriteLine(color.ColorName);
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
+
+        private static void CarTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            //carManager.Add(new Car { BrandId = 2, ColorId = 1, DailyPrice = 250, Description = "Tucson", ModelYear = 2012 });
+
+            var result = carManager.GetCarDeatils();
+
+            if (result.Success)
+            {
+                foreach (var car in result.Data)
+                {
+                    Console.WriteLine(car.CarName + "/" + car.BrandName + "/" + car.ColorName);
+                }
+            }
+
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+        }
     }
 }
